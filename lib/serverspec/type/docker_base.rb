@@ -21,7 +21,12 @@ module Serverspec::Type
 
     private
     def get_inspection
-      @get_inspection ||= @runner.run_command("docker inspect #{@name}")
+      if @options[:search_type] == 'grep'
+        container_name = @runner.run_command(%Q(docker ps --format "{{.Names}}" | grep #{@name})).stdout
+        @get_inspection ||= @runner.run_command("docker inspect #{container_name}")
+      else
+        @get_inspection ||= @runner.run_command("docker inspect #{@name}")
+      end
     end
   end
 end
