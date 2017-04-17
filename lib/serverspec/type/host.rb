@@ -8,6 +8,10 @@ module Serverspec::Type
       @runner.check_host_is_reachable(@name, port, proto, timeout)
     end
 
+    def ping_statistics
+      @runner.get_host_ping_statistics(@name, 5, 2).stdout.strip
+    end
+
     def ipaddress
       @runner.get_host_ipaddress(@name).stdout.strip
     end
